@@ -1,6 +1,6 @@
 # Healthcare Network Design Lab
 
-Design and simulation of a network for a **fictional provincial health authority**: 1 data centre, 2 hospitals, and 5 rural clinics. The project covers requirements, architecture, security, a WAN options analysis, a test plan, a rollout plan, and a small Python tool for config backups.
+Design of a network for a **fictional provincial health authority**, with partial lab simulation in Packet Tracer/GNS3: 1 data centre, 2 hospitals, and 5 rural clinics. The project covers requirements, architecture, security, a WAN options analysis, a test plan, a rollout plan, and a small Python tool for config backups.
 
 > **Scope note:** This is a learning/lab project. Sites are fictional and all addresses come from private or documentation ranges (RFC 1918 and RFC 5737). The repository contains no real credentials, keys, or production data. Configs are templates: validate them in your own lab and record results in `docs/test-plan.md`.
 
