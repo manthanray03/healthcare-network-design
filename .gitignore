@@ -1,0 +1,13 @@
+# Real device lists and backed-up configs can contain secrets: keep them out of Git.
+scripts/inventory.csv
+inventory.csv
+backups/
+*.cfg.bak
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store

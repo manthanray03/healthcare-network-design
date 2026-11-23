@@ -11,6 +11,16 @@ All ranges are private (RFC 1918) or documentation ranges (RFC 5737).
 | Hospital B | 10.30.0.0/16 | 2 |
 | Clinics 1 to 5 | 10.100.N.0/24 (N = clinic number) | 3 (stub) |
 
+## Data centre VLANs and loopbacks
+
+| VLAN / range | Name | Subnet | Gateway (HSRP on DC-CORE1/2) |
+|---|---|---|---|
+| 99 | DC-MGMT (admin workstations, jump host) | 10.10.99.128/25 | 10.10.99.129 |
+| 100 | SERVERS | 10.10.100.0/24 | 10.10.100.1 |
+| Loopbacks | Device management (/32 each) | 10.10.99.0/27 | n/a |
+
+The hospital and clinic `MGMT-ONLY` ACLs permit all of 10.10.99.0/24, which covers both the loopbacks and the management VLAN.
+
 ## Hospital VLANs (Hospital A shown; Hospital B uses 10.30.x.x)
 
 | VLAN | Name | Subnet | Gateway (HSRP) |
@@ -36,12 +46,16 @@ All ranges are private (RFC 1918) or documentation ranges (RFC 5737).
 
 | Link | Subnet |
 |---|---|
+| DC-EDGE-RTR to DC-CORE1 | 172.16.0.0/30 |
+| DC-CORE1 to pfSense LAN | 172.16.0.4/30 |
+| DC-CORE1 to DC-CORE2 (EtherChannel) | 172.16.0.8/30 |
+| DC-EDGE-RTR to DC-CORE2 | 172.16.0.12/30 |
 | DC-CORE1 to Hospital A DIST1 | 172.16.1.0/30 |
 | DC-CORE1 to Hospital B DIST1 | 172.16.2.0/30 |
 | DC-CORE1 to Clinic N | 172.16.(100+N).0/30 |
 | Clinic N IPsec tunnel | 172.31.N.0/30 |
 | DC edge to provincial WAN | 198.51.100.0/30 |
-| pfSense WAN (VPN peer) | 203.0.113.1 |
+| pfSense WAN (VPN peer) | 203.0.113.1/29, gateway 203.0.113.6 |
 | Clinic 1 backup internet link | 192.0.2.0/30 |
 
 ## Key servers
@@ -62,3 +76,12 @@ All ranges are private (RFC 1918) or documentation ranges (RFC 5737).
 | HOSP-A-DIST2 | 10.20.99.3 | Vlan99 (mirror of DIST1) |
 | HOSP-B-DIST1 | 10.30.99.2 | Vlan99 (same pattern as Hospital A) |
 | CLINIC1-RTR | 10.100.1.225 | GigabitEthernet0/1.99 |
+
+## OSPF router IDs
+
+| Device | Router ID |
+|---|---|
+| DC-CORE1 / DC-CORE2 | 1.1.1.1 / 1.1.1.2 |
+| HOSP-A-DIST1 | 1.1.1.11 |
+| DC-EDGE-RTR | 1.1.1.254 (also the BGP router ID, AS 65100) |
+| CLINIC1-RTR (clinic N: 1.1.1.(100+N)) | 1.1.1.101 |
